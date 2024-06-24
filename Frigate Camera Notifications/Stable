@@ -754,21 +754,11 @@ trigger_variables:
   camera: "{{ input_camera | regex_replace('^camera\\.|_\\d+$', '') }}"
   mqtt_topic: !input mqtt_topic
 trigger:
-  - platform: mqtt
-    topic: "{{mqtt_topic}}"
-    payload: "{{ camera }}/new"
-    value_template: "{{ value_json['after']['camera'] | lower | replace('-','_') }}/{{ value_json['type']}}"
-    id: frigate-event
-  - platform: event
-    event_type: mobile_app_notification_action
-    event_data:
-      action: "silence-{{ camera }}"
-    id: silence
-  - platform: event
-    event_type: mobile_app_notification_action
-    event_data:
-      action: "custom-{{ camera }}"
-    id: custom
+  - type: turned_on
+    platform: device
+    device_id: 5b5ae7002480bfe1d97d484e17e3b007
+    entity_id: 2a5ad7906cb732486e9ed083ecf025c8
+    domain: binary_sensor
 variables:
   input_camera: !input camera
   camera: "{{ input_camera | regex_replace('^camera\\.', '') }}"
